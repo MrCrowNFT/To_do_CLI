@@ -1,12 +1,14 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
 )
 
@@ -28,13 +30,23 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(displayAllCmd)
 
-	// Here you will define your flags and configuration settings.
+	sqliteTaskDatabase, err := sql.Open("sqlite3", "./sqlite-task-database.db")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// displayAllCmd.PersistentFlags().String("foo", "", "A help for foo")
+	rows, err := sqliteTaskDatabase.Query("SELECT * FROM taskTable")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// displayAllCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	for rows.Next() {
+		var Id int
+		var Task string
+		var Deadline string
+		rows.Scan(&Id, &Task, &Deadline)
+		log.Println(Id, Task, Deadline)
+	}
+
+	rows.Close()
 }

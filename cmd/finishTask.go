@@ -7,7 +7,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
 )
