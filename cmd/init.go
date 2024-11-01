@@ -6,20 +6,19 @@ package cmd
 
 import (
 	"fmt"
-
+	"log"
+	"os"	
+	_ "github.com/mattn/go-sqlite3"
+	"database/sql"
 	"github.com/spf13/cobra"
 )
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Initialize to do on CLI by creating the database",
+	Long: `To do on CLI wil create a new sqlite database to store all the tasks and 
+	deadlines, each with it own id for better manegment.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("init called")
 	},
@@ -28,13 +27,61 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(initCmd)
 
-	// Here you will define your flags and configuration settings.
+	exists, err := dbExists()
+	if err != nil{
+		log.Fatal(err)
+	}
+	if exists == true {
+		fmt.Print("Already initialized\n")
+		return
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
+	//Create task database
+	file, err := os.Create("sqlite-task-database.db")
+	fmt.Print("Tasks database created\n")
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	file.Close()
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//open the database
+	sqliteTaskDatabase, err := sql.Open("sqlite3", "./sqlite-task-database.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//close the database once the main function finish executing
+
+	//Create table
+	taskDbTable := `CREATE TABLE taskTable(
+		Id INTEGER NOT NULL AUTO_INCREMENT,
+		Task TEXT NOT NULL,
+		Deadline TEXT NOT NULL,
+		PRIMARY KEY (Id));`
+	
+	fmt.Println("Creating Task Table")
+
+	_, err = sqliteTaskDatabase.Exec(taskDbTable)
+    if err != nil {
+    log.Fatal(err)
+    }
+
+	//close the database
+	sqliteTaskDatabase.Close()
+
+	fmt.Println("Task Table Created Id/Task/Deadline")
+}
+
+func dbExists()(bool, error){
+	//try openeing database
+	_, err := os.Stat("sqlite-task-database.db")
+	//if it opens returns true
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err){
+		return false, nil
+	}
+	return false, err
 }
