@@ -13,9 +13,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// displayPendingCmd represents the displayPending command
-var displayPendingCmd = &cobra.Command{
-	Use:   "displayPending",
+// pCmd represents the p command
+var pCmd = &cobra.Command{
+	Use:   "p",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -24,12 +24,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("displayPending called")
+		fmt.Println("p called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(displayPendingCmd)
+	todayCmd.AddCommand(pCmd)
 
 	sqliteTaskDatabase, err := sql.Open("sqlite3", "./sqlite-task-database.db")
 	if err != nil{
@@ -50,7 +50,7 @@ func init() {
 		today := _today.Format("2006/01/02")
 
 		rows.Scan(&Id, &Task, &Deadline)
-		if Deadline < today {
+		if Deadline <= today {
 			log.Println(Id, Task, Deadline)
 		}
 	}

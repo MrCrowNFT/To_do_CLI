@@ -1,5 +1,6 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+
 */
 package cmd
 
@@ -9,12 +10,12 @@ import (
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/spf13/cobra"
+	"github.com/spf13/cobra"	
 )
 
-// displayAllCmd represents the displayAll command
-var displayAllCmd = &cobra.Command{
-	Use:   "displayAll",
+// displayCmd represents the display command
+var displayCmd = &cobra.Command{
+	Use:   "display",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -23,12 +24,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("displayAll called")
+		fmt.Println("display called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(displayAllCmd)
+	rootCmd.AddCommand(displayCmd)
 
 	sqliteTaskDatabase, err := sql.Open("sqlite3", "./sqlite-task-database.db")
 	if err != nil {
