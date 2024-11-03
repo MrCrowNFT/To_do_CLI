@@ -5,3 +5,5 @@
 - Fix the comp function
 - Fix the display function 
 - Re add the additional display function
+- Fix the add function
+(most of the fixes involve the database)
