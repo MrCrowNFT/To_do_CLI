@@ -62,8 +62,7 @@ var initCmd = &cobra.Command{
 		//close the database
 		sqliteTaskDatabase.Close()
 
-		fmt.Println("Task Table Created Id/Task/Deadline")
-		fmt.Println("init called")
+		fmt.Println("Task Table Created Successfully Id/Task/Deadline")
 	},
 }
 

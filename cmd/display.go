@@ -33,16 +33,23 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
+		defer rows.Close()
+
+		fmt.Println("ID | Task                       | Deadline")
+		fmt.Println("--------------------------------------------")
+
 		for rows.Next() {
 			var Id int
 			var Task string
 			var Deadline string
-			rows.Scan(&Id, &Task, &Deadline)
-			log.Println(Id, Task, Deadline)
+			err := rows.Scan(&Id, &Task, &Deadline)
+			if err != nil {
+				log.Fatal("Error scanning row:", err)
+			}
+
+			fmt.Printf("%-3d| %-25s | %s\n", Id, Task, Deadline)
 		}
 
-		rows.Close()
-		fmt.Println("display called")
 	},
 }
 

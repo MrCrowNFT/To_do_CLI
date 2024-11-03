@@ -55,7 +55,7 @@ to quickly create a Cobra application.`,
 
 	statement.Exec(Task, Deadline)
 	sqliteTaskDatabase.Close()
-		fmt.Println("add called")
+		fmt.Println("Task added succesfully")
 	},
 }
 
