@@ -1,22 +1,22 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+
 */
 package cmd
 
 import (
-	"database/sql"
 	"fmt"
+	"database/sql"
 	"log"
 	"time"
-
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
 )
 
-// addTaskCmd represents the addTask command
-var addTaskCmd = &cobra.Command{
-	Use:   "addTask",
-	Short: "Adds a new task description and deadline",
+// addCmd represents the add command
+var addCmd = &cobra.Command{
+	Use:   "add",
+	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -24,14 +24,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("addTask called")
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(addTaskCmd)
-
-	var year int
+		var year int
 	var month time.Month
 	var day int
 	var Task string
@@ -39,7 +32,7 @@ func init() {
 	// Open the database
 	sqliteTaskDatabase, err := sql.Open("sqlite3", "./sqlite-task-database.db")
 	if err != nil {
-		fmt.Println("You must first call init")
+		fmt.Println("You must first call 'todo init'")
 		log.Fatal(err)
 	}
 
@@ -62,4 +55,10 @@ func init() {
 
 	statement.Exec(Task, Deadline)
 	sqliteTaskDatabase.Close()
+		fmt.Println("add called")
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(addCmd)	
 }
