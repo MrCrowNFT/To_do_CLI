@@ -30,10 +30,28 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
+		defer sqliteTaskDatabase.Close()
+
 		fmt.Printf("Enter the completed task id: ")
 		fmt.Scanf("%v", &finished_id)
 
-		sqliteTaskDatabase.Query(`DELETE FROM taskTable WHERE Id = finished_id`)
+		result, err := sqliteTaskDatabase.Exec(`DELETE FROM taskTable WHERE Id = ?`, finished_id)
+		if err != nil{
+			fmt.Println("Error executing delete")
+			log.Fatal(err)
+		}
+
+		rowsAffected, err := result.RowsAffected()
+		if err !=nil {
+			fmt.Println("Error checking affected rows")
+			log.Fatal(err)
+		}
+		if rowsAffected == 0 {
+			fmt.Println("No task with that Id exist on database")
+		} else{
+			fmt.Println("Task Finished succesfully")
+		}
+
 		fmt.Println("comp called")
 	},
 }
