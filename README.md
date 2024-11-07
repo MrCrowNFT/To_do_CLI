@@ -3,5 +3,11 @@
 ## TODO
 ####
 - Re add the additional display function
-- Add documentation and comments
-- change database
+- Change database
+- Task Management Features
+- Improve User Interaction
+- Implement Notifications and Reminders
+- Network Integration
+- Error Handling and User Experience
+- Testing
+- Documentation and comments
