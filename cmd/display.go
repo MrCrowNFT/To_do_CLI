@@ -15,19 +15,16 @@ import (
 // displayCmd represents the display command
 var displayCmd = &cobra.Command{
 	Use:   "display",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Display all the pending tasks on the comand line",
+	Long: `Display all the pending tasks on the comand line on a table showing the id, task and deadline`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// Open database
 		sqliteTaskDatabase, err := sql.Open("sqlite3", "./sqlite-task-database.db")
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		// Select all rows from the database
 		rows, err := sqliteTaskDatabase.Query("SELECT * FROM taskTable")
 		if err != nil {
 			log.Fatal(err)
@@ -35,9 +32,11 @@ to quickly create a Cobra application.`,
 
 		defer rows.Close()
 
+		// Styling for the table on the command line
 		fmt.Println("ID | Task                       | Deadline")
 		fmt.Println("--------------------------------------------")
 
+		// Print all the tasks on the command line
 		for rows.Next() {
 			var Id int
 			var Task string
@@ -56,13 +55,4 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(displayCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// displayCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// displayCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

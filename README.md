@@ -10,4 +10,4 @@
 - Network Integration
 - Error Handling and User Experience
 - Testing
-- Documentation and comments
+- Documentation 

@@ -20,10 +20,12 @@ var initCmd = &cobra.Command{
 	Long: `To do on CLI wil create a new sqlite database to store all the tasks and 
 	deadlines, each with it own id for better manegment.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// Checks if database exists
 		exists, err := dbExists()
 		if err != nil{
 			log.Fatal(err)
 		}
+
 		if exists == true {
 			fmt.Print("Already initialized\n")
 			return
@@ -44,7 +46,6 @@ var initCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		//close the database once the main function finish executing
 
 		//Create table
 		taskDbTable := `CREATE TABLE taskTable(
